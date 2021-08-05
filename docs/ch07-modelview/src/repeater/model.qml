@@ -25,6 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// #region M1
 import QtQuick 6.2
 import "../common"
 
@@ -65,3 +66,4 @@ Column {
         }
     }
 }
+// #endregion M1

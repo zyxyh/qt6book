@@ -34,6 +34,7 @@ Background {
     width: 100
     height: 300
 
+// #region M1
     PathView {
         anchors.fill: parent
 
@@ -66,7 +67,9 @@ Background {
         preferredHighlightBegin: 0.5
         preferredHighlightEnd: 0.5
     }
+// #endregion M1
 
+// #region M2
     Component {
         id: flipCardDelegate
 
@@ -97,4 +100,5 @@ Background {
             text: index
         }
     }
+// #endregion M2
 }

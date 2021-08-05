@@ -25,6 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// #region M1
 import QtQuick 6.2
 import QtQml.XmlListModel
 import "../common"
@@ -73,3 +74,4 @@ Background {
         delegate: imageDelegate
     }
 }
+// #endregion M1

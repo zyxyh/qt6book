@@ -9,33 +9,38 @@ Window {
     Background {
         anchors.fill: parent
 
-        TableView {
-            id: view
-            anchors.fill: parent
-            anchors.margins: 20
+// #region M1
+TableView {
+    id: view
+    anchors.fill: parent
+    anchors.margins: 20
 
-            rowSpacing: 5
-            columnSpacing: 5
+    rowSpacing: 5
+    columnSpacing: 5
 
-            clip: true
+    clip: true
 
-            model: tableModel
+    model: tableModel
 
-            delegate: cellDelegate
-        }
+    delegate: cellDelegate
+}
+// #endregion M1
+        
     }
 
-    Component {
-        id: cellDelegate
+// #region M2
+Component {
+    id: cellDelegate
 
-        GreenBox {
-            implicitHeight: 40
-            implicitWidth: 40
+    GreenBox {
+        implicitHeight: 40
+        implicitWidth: 40
 
-            Text {
-                anchors.centerIn: parent
-                text: display
-            }
+        Text {
+            anchors.centerIn: parent
+            text: display
         }
     }
+}
+// #endregion M2
 }

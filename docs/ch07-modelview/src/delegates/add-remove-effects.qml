@@ -25,6 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// #region M1
 import QtQuick 6.2
 
 Rectangle {
@@ -143,3 +144,4 @@ Rectangle {
         }
     }
 }
+// #endregion M1

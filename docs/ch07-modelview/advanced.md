@@ -22,77 +22,18 @@ The example below demonstrates how the `PathView` element is used to create a vi
 
 In addition to the `path`, the `pathItemCount` property of the `PathView` has been set. This controls how densely populated the path will be. The `preferredHighlightBegin` and `preferredHighlightEnd` the `PathView.onPath` is used to control the visibility of the delegates.
 
-```qml
-PathView {
-    anchors.fill: parent
+<<< @/docs/ch07-modelview/src/pathview/coverview.qml#M1
 
-    delegate: flipCardDelegate
-    model: 100
 
-    path: Path {
-        startX: root.width/2
-        startY: 0
-
-        PathAttribute { name: "itemZ"; value: 0 }
-        PathAttribute { name: "itemAngle"; value: -90.0; }
-        PathAttribute { name: "itemScale"; value: 0.5; }
-        PathLine { x: root.width/2; y: root.height*0.4; }
-        PathPercent { value: 0.48; }
-        PathLine { x: root.width/2; y: root.height*0.5; }
-        PathAttribute { name: "itemAngle"; value: 0.0; }
-        PathAttribute { name: "itemScale"; value: 1.0; }
-        PathAttribute { name: "itemZ"; value: 100 }
-        PathLine { x: root.width/2; y: root.height*0.6; }
-        PathPercent { value: 0.52; }
-        PathLine { x: root.width/2; y: root.height; }
-        PathAttribute { name: "itemAngle"; value: 90.0; }
-        PathAttribute { name: "itemScale"; value: 0.5; }
-        PathAttribute { name: "itemZ"; value: 0 }
-    }
-
-    pathItemCount: 16
-
-    preferredHighlightBegin: 0.5
-    preferredHighlightEnd: 0.5
-}
-```
 
 The delegate, shown below, utilizes the attached properties `itemZ`, `itemAngle` and `itemScale` from the `PathAttribute` elements. It is worth noticing that the attached properties of the delegate only are available from the `wrapper`. Thus, the `rotX` property is defined to be able to access the value from within the `Rotation` element.
 
 Another detail specific to `PathView` worth noticing is the usage of the attached `PathView.onPath` property. It is common practice to bind the visibility to this, as this allows the `PathView` to keep invisible elements for caching purposes. This can usually not be handled through clipping, as the item delegates of a `PathView` are placed more freely than the item delegates of `ListView` or `GridView` views.
 
-```qml
-Component {
-    id: flipCardDelegate
 
-    BlueBox {
-        id: wrapper
-
-        width: 64
-        height: 64
-        antialiasing: true
-
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "#2ed5fa" }
-            GradientStop { position: 1.0; color: "#2467ec" }
-        }
+<<< @/docs/ch07-modelview/src/pathview/coverview.qml#M2
 
 
-        visible: PathView.onPath
-
-        scale: PathView.itemScale
-        z: PathView.itemZ
-
-        property variant rotX: PathView.itemAngle
-        transform: Rotation {
-            axis { x: 1; y: 0; z: 0 }
-            angle: wrapper.rotX;
-            origin { x: 32; y: 32; }
-        }
-        text: index
-    }
-}
-```
 
 When transforming images or other complex elements on in `PathView`, a performance optimization trick that is common to use is to bind the `smooth` property of the `Image` element to the attached property `PathView.view.moving`. This means that the images are less pretty while moving but smoothly transformed when stationary. There is no point spending processing power on smooth scaling when the view is in motion, as the user will not be able to see this anyway.
 
@@ -112,40 +53,13 @@ In the example below, we set up a simple `TableView` with a custom model exposed
 
 In the example below, we create a `TableView` and set the `rowSpacing` and `columnSpacing` to control the horizontal and vertical gaps between delegates. The rest of the properties are set up as for any other type of view.
 
-```qml
-TableView {
-    id: view
-    anchors.fill: parent
-    anchors.margins: 20
+<<< @/docs/ch07-modelview/src/tableview/main.qml#M1
 
-    rowSpacing: 5
-    columnSpacing: 5
 
-    clip: true
-
-    model: tableModel
-
-    delegate: cellDelegate
-}
-```
 
 The delegate itself can carry an implicit size through the `implicitWidth` and `implicitHeight`. This is what we do in the example below. The actual data contents, i.e. the data returned from the model’s `display` role.
 
-```qml
-Component {
-    id: cellDelegate
-
-    GreenBox {
-        implicitHeight: 40
-        implicitWidth: 40
-
-        Text {
-            anchors.centerIn: parent
-            text: display
-        }
-    }
-}
-```
+<<< @/docs/ch07-modelview/src/tableview/main.qml#M2
 
 It is possible to provide delegates with different sizes depending on the model contents, e.g.:
 
@@ -187,56 +101,9 @@ For every model item, a number of roles are extracted. These are represented by 
 
 The `imageSource` property extracts the value of an attribute of a tag instead of the contents of the tag. In this case, the `url` attribute of the `enclosure` tag is extracted as a string. The `imageSource` property can then be used directly as the `source` for an `Image` element, which loads the image from the given URL.
 
-```qml
-import QtQuick 6.2
-import QtQml.XmlListModel
-import "../common"
+<<< @/docs/ch07-modelview/src/xmllistmodel/images.qml#M1
 
-Background {
-    width: 300
-    height: 480
 
-    Component {
-        id: imageDelegate
-
-        Box {
-            width: listView.width
-            height: 220
-            color: '#333'
-
-            Column {
-                Text {
-                    text: title
-                    color: '#e0e0e0'
-                }
-                Image {
-                    width: listView.width
-                    height: 200
-                    fillMode: Image.PreserveAspectCrop
-                    source: imageSource
-                }
-            }
-        }
-    }
-
-    XmlListModel {
-        id: imageModel
-
-        source: "https://www.nasa.gov/rss/dyn/image_of_the_day.rss"
-        query: "/rss/channel/item"
-
-        XmlListModelRole { name: "title"; elementName: "title" }
-        XmlListModelRole { name: "imageSource"; elementName: "enclosure"; attributeName: "url"; }
-    }
-
-    ListView {
-        id: listView
-        anchors.fill: parent
-        model: imageModel
-        delegate: imageDelegate
-    }
-}
-```
 
 ## Lists with Sections
 
@@ -256,76 +123,9 @@ It is also possible to assign a section delegate component to the `section.deleg
 
 The example below demonstrates the section concept by showing a list of spacemen sectioned after their nationality. The `nation` is used as the `section.property`. The `section.delegate` component, `sectionDelegate`, shows a heading for each nation, displaying the name of the nation. In each section, the names of the spacemen are shown using the `spaceManDelegate` component.
 
-```qml
-import QtQuick 6.2
-import "../common"
-
-Background {
-    width: 300
-    height: 290
-
-    ListView {
-        anchors.fill: parent
-        anchors.margins: 20
-
-        clip: true
-
-        model: spaceMen
-
-        delegate: spaceManDelegate
-
-        section.property: "nation"
-        section.delegate: sectionDelegate
-    }
-
-    Component {
-        id: spaceManDelegate
-
-        Item {
-            width: ListView.view.width
-            height: 20
-            Text {
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.leftMargin: 8
-                font.pixelSize: 12
-                text: name
-                color: '#1f1f1f'
-            }
-        }
-    }
-
-    Component {
-        id: sectionDelegate
-
-        BlueBox {
-            width: ListView.view.width
-            height: 20
-            text: section
-            fontColor: '#e0e0e0'
-        }
-    }
+<<< @/docs/ch07-modelview/src/listview/sections.qml#M1
 
 
-    ListModel {
-        id: spaceMen
-
-        ListElement { name: "Abdul Ahad Mohmand"; nation: "Afganistan"; }
-        ListElement { name: "Marcos Pontes"; nation: "Brazil"; }
-        ListElement { name: "Alexandar Panayotov Alexandrov"; nation: "Bulgaria"; }
-        ListElement { name: "Georgi Ivanov"; nation: "Bulgaria"; }
-        ListElement { name: "Roberta Bondar"; nation: "Canada"; }
-        ListElement { name: "Marc Garneau"; nation: "Canada"; }
-        ListElement { name: "Chris Hadfield"; nation: "Canada"; }
-        ListElement { name: "Guy Laliberte"; nation: "Canada"; }
-        ListElement { name: "Steven MacLean"; nation: "Canada"; }
-        ListElement { name: "Julie Payette"; nation: "Canada"; }
-        ListElement { name: "Robert Thirsk"; nation: "Canada"; }
-        ListElement { name: "Bjarni Tryggvason"; nation: "Canada"; }
-        ListElement { name: "Dafydd Williams"; nation: "Canada"; }
-    }
-}
-```
 
 ## The ObjectModel
 
@@ -337,38 +137,9 @@ In some cases you might want to use a list view for a large set of different ite
 
 In the example below we put three `Rectangle` elements into the `ObjectModel`. However, one rectangle has a `Text` element child while the last one has rounded corners. This would have resulted in a table-style model using something like a `ListModel`. It would also have resulted in empty `Text` elements in the model.
 
-```qml
-import QtQuick 6.2
-import QtQml.Models
+<<< @/docs/ch07-modelview/src/delegates/objectmodel.qml#M1
 
-Rectangle {
-    width: 320
-    height: 320
-    
-    gradient: Gradient {
-        GradientStop { position: 0.0; color: "#f6f6f6" }
-        GradientStop { position: 1.0; color: "#d7d7d7" }
-    }
-    
-    ObjectModel {
-        id: itemModel
-        
-        Rectangle { height: 60; width: 80; color: "#157efb" }
-        Rectangle { height: 20; width: 300; color: "#53d769" 
-            Text { anchors.centerIn: parent; color: "black"; text: "Hello QML" }
-        }
-        Rectangle { height: 40; width: 40; radius: 10; color: "#fc1a1c" }
-    }
-    
-    ListView {
-        anchors.fill: parent
-        anchors.margins: 10
-        spacing: 5
-        
-        model: itemModel
-    }
-}
-```
+
 
 Another aspect of the `ObjectModel` is that is can be dynamically populated using the `get`, `insert`, `move`, `remove`, and `clear` methods. This way, the contents of the model can be dynamically generated from various sources and still easily shown in a single view.
 
@@ -380,76 +151,9 @@ The example below demonstrates this by having a model of cities that greet you i
 
 In the delegate `actionDelegate`, the `MouseArea` calls the function `hello` as an ordinary function and this results a call to the corresponding `hello` property in the model.
 
-```qml
-import QtQuick 6.2
+<<< @/docs/ch07-modelview/src/delegates/model-action.qml#M1
 
-Rectangle {
-    width: 120
-    height: 300
 
-    gradient: Gradient {
-        GradientStop { position: 0.0; color: "#f6f6f6" }
-        GradientStop { position: 1.0; color: "#d7d7d7" }
-    }
-    
-    ListModel {
-        id: actionModel
-        
-        ListElement {
-            name: "Copenhagen"
-            hello: function(value) { console.log(value + ": You clicked Copenhagen!"); }
-        }
-        ListElement {
-            name: "Helsinki"
-            hello: function(value) { console.log(value + ": Helsinki here!"); }
-        }
-        ListElement {
-            name: "Oslo"
-            hello: function(value) { console.log(value + ": Hei Hei fra Oslo!"); }
-        }
-        ListElement {
-            name: "Stockholm"
-            hello: function(value) { console.log(value + ": Stockholm calling!"); }
-        }
-    }
-
-    ListView {
-        anchors.fill: parent
-        anchors.margins: 20
-
-        clip: true
-
-        model: actionModel
-
-        delegate: actionDelegate
-        spacing: 5
-
-        focus: true
-    }
-
-    Component {
-        id: actionDelegate
-
-        Rectangle {
-            width: ListView.view.width
-            height: 40
-
-            color: "#157efb"
-
-            Text {
-                anchors.centerIn: parent
-                font.pixelSize: 10
-                text: name
-            }
-            
-            MouseArea {
-                anchors.fill: parent
-                onClicked: hello(index);
-            }
-        }
-    }
-}
-```
 
 ## Tuning Performance
 

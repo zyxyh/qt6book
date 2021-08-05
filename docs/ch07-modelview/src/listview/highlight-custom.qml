@@ -50,6 +50,7 @@ Background {
         focus: true
     }
 
+// #region M1
     Component {
         id: highlightComponent
 
@@ -73,6 +74,7 @@ Background {
             }
         }
     }
+// #endregion M1
 
     Component {
         id: numberDelegate

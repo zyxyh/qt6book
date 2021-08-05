@@ -25,6 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// #region M1
 import QtQuick 6.2
 import "../common"
 
@@ -93,3 +94,4 @@ Background {
         ListElement { name: "Dafydd Williams"; nation: "Canada"; }
     }
 }
+// #endregion M1
