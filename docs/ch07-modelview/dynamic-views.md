@@ -14,37 +14,7 @@ The two elements are similar in their usage. We will begin with the `ListView` a
 
 The `ListView` is similar to the `Repeater` element. It uses a `model`, instantiates a `delegate` and between the delegates, there can be `spacing`. The listing below shows how a simple setup can look.
 
-```qml
-import QtQuick 6.2
-import "../common"
-
-Background {
-    width: 80
-    height: 300
-
-    ListView {
-        anchors.fill: parent
-        anchors.margins: 20
-
-        clip: true
-
-        model: 100
-
-        delegate: numberDelegate
-        spacing: 5
-    }
-
-    Component {
-        id: numberDelegate
-
-        GreenBox {
-            width: 40
-            height: 40
-            text: index
-        }
-    }
-}
-```
+<<< @/docs/ch07-modelview/src/listview/basic.qml#M1
 
 
 
